@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web2APK Upload Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    #dropzone {
+      border: 3px dashed #999;
+      padding: 50px;
+      width: 300px;
+      margin: 0 auto;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+    #dropzone.hover { border-color: #333; }
+    input[type="file"] { display: none; }
+    button { padding: 10px 20px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Upload ZIP</h1>
+  <div id="dropzone">Drag & drop ZIP here<br>or<br>
+    <button onclick="fileInput.click()">Choose File</button>
+  </div>
+  <form id="uploadForm" action="/build" method="POST" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="zip" accept=".zip">
+  </form>
+  <script>
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+    const form = document.getElementById("uploadForm");
+
+    dropzone.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropzone.classList.add("hover");
+    });
+
+    dropzone.addEventListener("dragleave", e => {
+      e.preventDefault();
+      dropzone.classList.remove("hover");
+    });
+
+    dropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropzone.classList.remove("hover");
+      const file = e.dataTransfer.files[0];
+      if(file && file.name.endsWith(".zip")){
+        fileInput.files = e.dataTransfer.files;
+        form.submit();
+      } else {
+        alert("❌ Only ZIP files are allowed");
+      }
+    });
+
+    fileInput.addEventListener("change", () => {
+      if(fileInput.files.length > 0){
+        form.submit();
+      }
+    });
+  </script>
+</body>
+</html>
