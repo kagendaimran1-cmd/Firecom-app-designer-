@@ -1,3 +1,6 @@
+
+const BACKEND_URL = "https://firecom-app-backend.onrender.com";
+
 const iconInput = document.getElementById("iconInput");
 const iconPreview = document.getElementById("iconPreview");
 
@@ -18,20 +21,16 @@ function saveProject() {
   formData.append("version", version);
   formData.append("targetUrl", targetUrl);
 
-  if (iconInput.files.length > 0) {
-    formData.append("icon", iconInput.files[0]);
-  }
+  if (iconInput.files.length > 0) formData.append("icon", iconInput.files[0]);
 
-  // Send to backend
-  fetch("/upload_project", {
-    method: "POST",
-    body: formData
-  })
+  fetch(`${BACKEND_URL}/upload_project`, { method: "POST", body: formData })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
         alert("✅ Project saved! APK build started");
-        // Redirect to app page
+        localStorage.setItem("firecom_project", JSON.stringify({
+          appName, packageName, version, targetUrl
+        }));
         window.location.href = "app.html";
       } else {
         alert("❌ Error: " + data.message);
@@ -49,6 +48,7 @@ iconInput.addEventListener("change", () => {
   reader.onload = () => {
     iconPreview.src = reader.result;
     iconPreview.style.display = "block";
+    localStorage.setItem("firecom_project_icon", reader.result);
   };
   reader.readAsDataURL(file);
 });
