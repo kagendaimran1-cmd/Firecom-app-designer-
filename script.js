@@ -1,19 +1,22 @@
 /*************************************************
+ * BACKEND URL
+ *************************************************/
+const BACKEND_URL = "https://firecom-app-backend.onrender.com";
+
+/*************************************************
  * SPLASH → LOGIN TRANSITION
  *************************************************/
 window.addEventListener("load", () => {
   const splash = document.getElementById("splash");
   const loginCard = document.getElementById("loginCard");
 
-  // Show splash for 2 seconds
   setTimeout(() => {
     splash.style.opacity = "0";
-
     setTimeout(() => {
       splash.style.display = "none";
       loginCard.classList.remove("hidden");
-    }, 1000); // fade-out duration
-  }, 2000); // visible duration
+    }, 1000);
+  }, 2000);
 });
 
 /*************************************************
@@ -55,10 +58,7 @@ window.addEventListener("offline", () => {
  * FIREBASE SETUP
  *************************************************/
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyACTaLUXLjWC9iyUEpGYhJXLjNnu9wN4Cw",
@@ -92,17 +92,13 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
 
-    if (remember) {
-      localStorage.setItem("firecom_user", email);
-    }
+    if (remember) localStorage.setItem("firecom_user", email);
 
     showStatus("Login successful!", true);
 
-    // Go to PROJECT SETTINGS (not app.html)
     setTimeout(() => {
       window.location.href = "project.html";
     }, 800);
-
   } catch (err) {
     showStatus("❌ " + err.message);
   }
