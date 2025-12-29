@@ -1,3 +1,6 @@
+
+const BACKEND_URL = "https://firecom-app-backend.onrender.com";
+
 const dropzone = document.getElementById("dropzone");
 const fileInput = document.getElementById("fileInput");
 const chooseBtn = document.getElementById("chooseBtn");
@@ -5,26 +8,16 @@ const statusBox = document.getElementById("status");
 
 chooseBtn.addEventListener("click", () => fileInput.click());
 
-dropzone.addEventListener("dragover", e => {
-  e.preventDefault();
-  dropzone.classList.add("hover");
-});
-
-dropzone.addEventListener("dragleave", () => {
-  dropzone.classList.remove("hover");
-});
+dropzone.addEventListener("dragover", e => { e.preventDefault(); dropzone.classList.add("hover"); });
+dropzone.addEventListener("dragleave", () => dropzone.classList.remove("hover"));
 
 dropzone.addEventListener("drop", e => {
   e.preventDefault();
   dropzone.classList.remove("hover");
-
-  const file = e.dataTransfer.files[0];
-  handleFile(file);
+  handleFile(e.dataTransfer.files[0]);
 });
 
-fileInput.addEventListener("change", () => {
-  handleFile(fileInput.files[0]);
-});
+fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
 
 function handleFile(file) {
   if (!file) return;
@@ -39,23 +32,15 @@ function handleFile(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  // Also append saved project settings from project.html
+  // Append saved project settings
   const project = JSON.parse(localStorage.getItem("firecom_project") || "{}");
   if (project.appName) formData.append("appName", project.appName);
   if (project.packageName) formData.append("packageName", project.packageName);
   if (project.version) formData.append("version", project.version);
   if (project.targetUrl) formData.append("targetUrl", project.targetUrl);
-  if (project.icon) {
-    // convert Base64 back to blob
-    const blob = dataURLtoBlob(project.icon);
-    formData.append("icon", blob, "icon.png");
-  }
+  if (project.icon) formData.append("icon", dataURLtoBlob(project.icon), "icon.png");
 
-  // Send to backend
-  fetch("/upload", {
-    method: "POST",
-    body: formData
-  })
+  fetch(`${BACKEND_URL}/upload`, { method: "POST", body: formData })
     .then(res => res.text())
     .then(msg => status(msg, true))
     .catch(err => status("❌ " + err));
@@ -66,7 +51,6 @@ function status(msg, success = false) {
   statusBox.innerText = msg;
 }
 
-// Helper: convert Base64 icon to Blob
 function dataURLtoBlob(dataurl) {
   const arr = dataurl.split(',');
   const mime = arr[0].match(/:(.*?);/)[1];
@@ -78,10 +62,10 @@ function dataURLtoBlob(dataurl) {
 }
 
 /*************************************************
- * SOCKET.IO (if backend exists)
+ * SOCKET.IO
  *************************************************/
 try {
-  const socket = io();
+  const socket = io(BACKEND_URL);
 
   socket.on("apk_ready", data => {
     alert("✅ APK is ready!");
