@@ -97,7 +97,7 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
     showStatus("Login successful!", true);
 
     setTimeout(() => {
-      window.location.href = "project.html";
+      window.location.href = "Project.html";
     }, 800);
   } catch (err) {
     showStatus("❌ " + err.message);
