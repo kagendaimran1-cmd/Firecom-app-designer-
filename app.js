@@ -1,4 +1,3 @@
-
 const BACKEND_URL = "https://firecom-app-backend.onrender.com";
 
 const dropzone = document.getElementById("dropzone");
@@ -8,7 +7,11 @@ const statusBox = document.getElementById("status");
 
 chooseBtn.addEventListener("click", () => fileInput.click());
 
-dropzone.addEventListener("dragover", e => { e.preventDefault(); dropzone.classList.add("hover"); });
+dropzone.addEventListener("dragover", e => { 
+  e.preventDefault(); 
+  dropzone.classList.add("hover"); 
+});
+
 dropzone.addEventListener("dragleave", () => dropzone.classList.remove("hover"));
 
 dropzone.addEventListener("drop", e => {

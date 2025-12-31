@@ -1,4 +1,3 @@
-
 const BACKEND_URL = "https://firecom-app-backend.onrender.com";
 
 const iconInput = document.getElementById("iconInput");
@@ -28,9 +27,10 @@ function saveProject() {
     .then(data => {
       if (data.success) {
         alert("✅ Project saved! APK build started");
-        localStorage.setItem("firecom_project", JSON.stringify({
-          appName, packageName, version, targetUrl
-        }));
+        localStorage.setItem(
+          "firecom_project",
+          JSON.stringify({ appName, packageName, version, targetUrl, icon: localStorage.getItem("firecom_project_icon") })
+        );
         window.location.href = "app.html";
       } else {
         alert("❌ Error: " + data.message);
