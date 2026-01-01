@@ -11,7 +11,6 @@ dropzone.addEventListener("dragover", e => {
   e.preventDefault(); 
   dropzone.classList.add("hover"); 
 });
-
 dropzone.addEventListener("dragleave", () => dropzone.classList.remove("hover"));
 
 dropzone.addEventListener("drop", e => {
@@ -35,7 +34,6 @@ function handleFile(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  // Append saved project settings
   const project = JSON.parse(localStorage.getItem("firecom_project") || "{}");
   if (project.appName) formData.append("appName", project.appName);
   if (project.packageName) formData.append("packageName", project.packageName);
@@ -64,12 +62,8 @@ function dataURLtoBlob(dataurl) {
   return new Blob([u8arr], {type:mime});
 }
 
-/*************************************************
- * SOCKET.IO
- *************************************************/
 try {
   const socket = io(BACKEND_URL);
-
   socket.on("apk_ready", data => {
     alert("✅ APK is ready!");
     window.location.href = data.url;
