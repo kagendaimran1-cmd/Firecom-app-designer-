@@ -2,68 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Project Settings</title>
+  <title>Project Settings - Firecom App Designer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <meta name="description" content="Configure your Android app project easily with Firecom App Designer. Set app name, package, version, target URL, and icon before building APKs online.">
+  <meta name="keywords" content="Firecom App Designer, Android app builder, APK generator, online app designer">
+  <meta name="author" content="Firecom App Designer Team">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Project Settings - Firecom App Designer">
+  <meta property="og:description" content="Configure your Android app project easily with Firecom App Designer. Set app name, package, version, target URL, and icon before building APKs online.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://firecomappdesigner.netlify.app/Project.html">
+  <meta property="og:image" content="https://firecomappdesigner.netlify.app/assets/preview.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://firecomappdesigner.netlify.app/Project.html">
 
   <link rel="stylesheet" href="project.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #6a11cb, #2575fc);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    header h1 {
-      margin: 10px 0;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card label {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .card input {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-      width: 100%;
-    }
-
-    button {
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      background: #ffdd57;
-      color: #333;
-      font-weight: bold;
-    }
-
-    #iconPreview {
-      margin-top: 10px;
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: none;
-    }
+    body { font-family: Arial, sans-serif; background: linear-gradient(to bottom, #6a11cb, #2575fc); color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    header h1 { margin: 10px 0; }
+    .card { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 10px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; }
+    .card label { font-weight: bold; margin-top: 10px; }
+    .card input { padding: 8px; border-radius: 5px; border: none; outline: none; width: 100%; }
+    button { padding: 10px; margin-top: 15px; border-radius: 5px; border: none; cursor: pointer; background: #ffdd57; color: #333; font-weight: bold; }
+    #iconPreview { margin-top: 10px; width: 80px; height: 80px; object-fit: cover; border-radius: 10px; display: none; }
   </style>
 </head>
 <body>
@@ -87,28 +52,27 @@
     <input type="text" id="targetUrl" placeholder="index.html or https://example.com">
 
     <label>App Icon</label>
-<button type="button" id="chooseIconBtn">Choose App Icon</button>
-<input type="file" id="iconInput" accept="image/*" hidden>
-<img id="iconPreview" alt="Icon preview">
+    <button type="button" id="chooseIconBtn">Choose App Icon</button>
+    <input type="file" id="iconInput" accept="image/*" hidden>
+    <img id="iconPreview" alt="Icon preview">
 
     <button onclick="saveProject()">Save & Continue</button>
   </main>
 
   <script>
-    // Show icon preview
     const iconInput = document.getElementById("iconInput");
     const iconPreview = document.getElementById("iconPreview");
+    document.getElementById("chooseIconBtn").addEventListener("click", () => iconInput.click());
 
     iconInput.addEventListener("change", () => {
-      if (iconInput.files.length) {
-        const file = iconInput.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          iconPreview.src = reader.result;
-          iconPreview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      }
+      if (!iconInput.files.length) return;
+      const file = iconInput.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        iconPreview.src = reader.result;
+        iconPreview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
     });
   </script>
 
